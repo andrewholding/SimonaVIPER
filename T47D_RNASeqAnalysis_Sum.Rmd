@@ -1,0 +1,367 @@
+---
+title: "T47D_RNASeqAnalzsis_Sum"
+author: "Simona"
+date: "30/04/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load libraries}
+
+library(Rsubread)
+library(DESeq2)
+library(circlize)
+library(RColorBrewer)
+library(stringr)
+library(gplots)
+library(ggplot2)
+library(magrittr)
+library(annotate)
+library(graphics)
+library(org.Hs.eg.db)
+library(msigdbr)
+library(fgsea)
+library(aracne.networks)
+library(viper)
+library(kableExtra)
+```
+
+```{r Load Count Matrix and define variables}
+
+genesT47D= read.csv("genesT47D.txt", header= FALSE, sep=',')
+splitted<- str_split_fixed(genesT47D$V2, "_",2)
+genesT47D<- cbind.data.frame(genesT47D$V1, splitted[,1])
+colnames(genesT47D)<- c("V1", "V2")
+GenenamesT47D<- as.matrix(genesT47D)
+a<- c("GAPDH")
+GenenamesT47D<-rbind(GenenamesT47D, a)
+
+#GenenamesT47D and genesT47D have basically the same content. The only difference is that GenenamesT47D has GAPDH added as a control later in the heatmap.
+
+MatrixT47D <- read.csv("CountMatrixT47D_Genenames.csv", header=TRUE)
+
+rownames(MatrixT47D)<- make.names(MatrixT47D[,1], unique = TRUE)
+MatrixT47D<- MatrixT47D[,-1]
+keeprow<- rowSums(MatrixT47D) >10
+keepcol<- colSums(MatrixT47D) >0
+MatrixT47D<- MatrixT47D[keeprow,keepcol]
+
+rm(a, splitted)
+```
+
+```{r Normalizing Count data}
+
+#Normalisation is done with VST to make the variance independent of the mean
+
+ddsT47D<- as.matrix(MatrixT47D)
+
+vsdT47D <- varianceStabilizingTransformation(ddsT47D)
+
+rm(ddsT47D)
+```
+
+
+```{r Produces sorted heatmaps}
+
+color.palette <- colorRampPalette(c("#F8F8F8", "yellow", "orange", "red"))(n=1100)
+
+col_breaks = c(seq(0,0.1,length=1),  # for white
+                seq(0.1,2,length=100),
+                seq(2.1,4,length=100),
+                seq(4.1,5,length=100),
+                seq(5.1,6,length=100),
+                seq(6.01,7,length=100),
+                seq(7.01,9,length=100),
+                seq(9.01,11,length=100),
+                seq(11.01,13,length=100),
+                seq(13.01,15,length=100),
+                seq(15.01,16,length=100),
+                seq(16.01,18,length=100))
+
+###############################################################
+###Reduce normalized vsdT47D Matrix to only the relevant genes
+
+###extract positions and names of these genes
+
+matchT47D= which(rownames(vsdT47D) %in% GenenamesT47D[,2])
+namesT47D<- intersect(rownames(vsdT47D), GenenamesT47D[,2])
+
+###Use normalized data and apply correct names
+
+HeatmapVSTT47D=list()
+for (i in 1:length(matchT47D)){
+  m= matchT47D[i]
+  HeatmapVSTT47D[[i]]= rbind(vsdT47D[m,])
+}
+
+#Match them all in one big data frame
+HeatmapVSTT47D<- as.data.frame(do.call(rbind, HeatmapVSTT47D))
+
+rownames(HeatmapVSTT47D)<-namesT47D
+
+HeatmapVSTT47D<- as.matrix(HeatmapVSTT47D)
+
+rm(i,m)
+
+###############################################################
+##Reorder Heatmap 
+genesT47D<- genesT47D[order(genesT47D$V2),]
+HeatmapVSTT47D<- HeatmapVSTT47D[order(rownames(HeatmapVSTT47D)),]
+#Both are sorted in a alphabetical order now
+genesT47D<- as.matrix(genesT47D)
+rownames(genesT47D)<- genesT47D[,1]
+genesT47D<- genesT47D[,-1]
+genesT47D<- t(genesT47D)
+
+#compare two matrices and adjust coloumns in Heatmap2 into the
+#same order as it is in genesT47D
+
+col.order<- colnames(genesT47D)
+
+HeatmapVSTT47D<- HeatmapVSTT47D[,col.order]
+
+###############################################################
+##Produce actual heatmap
+#scale= none avoids that heatmap function is normalizing the data again
+
+par(las=1, mar=c(2,9,2,9))
+heatmap.2(HeatmapVSTT47D, 
+          margins = c(6,6),
+          col= color.palette, 
+          #par(omi=c(2,2,0.5,2)),
+          breaks =col_breaks, 
+          scale= c("none"),
+          Rowv = NULL,
+          Colv = NULL,
+          main = "Knocked-down Genes T47D Heatmap",
+          lhei = c(0.25,1),
+          key.title = "Color Key", #IF removed titel will be shown
+          keysize = 0.75,
+          key.par = list(mar= c(2.5,0.25,2.5,0.5)),
+          density.info =  "none", 
+          key.xlab = "Normalized Read Counts",
+          tracecol = NA,
+          dendrogram= "none")
+```
+
+```{r DESeq2 analysis for differential genexpression}
+#############################################################
+###Create an colData object with sample informations
+
+genesT47D<- genesT47D[,order(colnames(genesT47D))]
+coldata<- as.data.frame(genesT47D)
+colnames(coldata)<- "Gene"
+coldata$Gene %<>% relevel("CTRL") # relevel to have untreated in first position
+
+
+###########################################################
+###Do the DeSeq Analysis
+
+ddsT47D<-DESeqDataSetFromMatrix(countData = MatrixT47D, colData = coldata, 
+                            design= ~Gene)
+ddsT47D<- DESeq(ddsT47D)
+resT47D<- results(ddsT47D)
+
+########################################################
+###Do the two way comparison
+
+perturbedGenes<- resultsNames(ddsT47D)
+perturbedGenes<- perturbedGenes[2:11] #exclude Intercept variable
+
+shrink.list.T47D=list()
+for (i in perturbedGenes){
+    shrink.list.T47D[[i]]<- lfcShrink(ddsT47D, 
+                                 coef = i,
+                                 alpha= 0.05,
+                                 quiet= TRUE)
+}
+
+```
+
+```{r produce MA plot}
+#############################################################
+###plot as MA plot for visualisation
+#genes with pval <0.1 are red
+
+title=sort(namesT47D[(! namesT47D %in% c("GAPDH", "CTRL"))])
+
+for (i in 1:length(shrink.list.T47D)){
+  t=title[i]
+  plotMA(shrink.list.T47D[[i]], ylim=c(-2,2), main = paste(t,"vs CTRL", sep=" "), alpha=0.05)
+}
+
+```
+
+```{r GSEA }
+#################################################
+#Gene Set Enrichment Analysis determines whether an prior defined set 
+#of genes shows statistically significant,concordant differences between two biological states/phenotypes
+
+########################################################################
+###Prepare gene IDs 
+
+id= read.csv("CountMatrixT47D.csv", header = TRUE)
+id<-id[keeprow,keepcol]
+rownames(id)<- id[,1]
+id<- id[,-1] #Save the GeneIDs as rownames and then delete first column containing GeneIDs
+
+genes= rownames(id) #In genes the actual IDs are saved
+
+
+##########################################################################
+###Load Log2Fold changes
+i=1
+fold.data<- matrix(ncol=10, nrow = 18959)
+for (i in 1:10){
+  fold.data[,i]<-cbind(unlist(shrink.list.T47D[[i]]$log2FoldChange))
+  i=i+1
+}
+
+rownames(fold.data)<-genes
+colnames(fold.data)<- names(shrink.list.T47D)
+
+#Data from lowcount Genes is excluded 
+#keeprows<- rowSums(fold.data) > 0
+#fold.data<-fold.data[keeprows,]
+
+
+filenames<- colnames(fold.data)
+for (i in 1:ncol(fold.data)){
+  assign(filenames[i], as.vector(fold.data[,i])) #produces 10 seperate vectors
+}
+
+#Assign each value in the log2Foldchange files the corresponding geneID
+#Requires genes and the log2foldchange files to have the same sequence and length
+names(Gene_CAMK2D_vs_CTRL)<- genes
+names(Gene_CDK8_vs_CTRL)<- genes
+names(Gene_CSNK1A1_vs_CTRL)<- genes
+names(Gene_ESR1_vs_CTRL)<- genes
+names(Gene_GRB2_vs_CTRL)<- genes
+names(Gene_HIPK4_vs_CTRL)<- genes
+names(Gene_KSR1_vs_CTRL)<- genes
+names(Gene_LIMK1_vs_CTRL)<- genes
+names(Gene_MKNK2_vs_CTRL)<- genes
+names(Gene_NEK9_vs_CTRL)<- genes
+
+m_df = msigdbr(species = "Homo sapiens")
+
+ESR_related<-m_df[grep("ESR1", m_df$gs_name),]
+
+m_list = ESR_related %>% split(x = .$entrez_gene , f = .$gs_name)
+
+
+#######################################################################
+##Log2FoldChanges are extracted in GSEA analysis
+
+CAMK2D<- fgsea(m_list, Gene_CAMK2D_vs_CTRL, nperm=1000, maxSize = 500)
+CAMK2D<- CAMK2D[order(pval)]
+CDK8<-fgsea(m_list, Gene_CDK8_vs_CTRL, nperm=1000, maxSize = 500)
+CDK8<-CDK8[order(pval)]
+CSNK1A1<- fgsea(m_list, Gene_CSNK1A1_vs_CTRL, nperm=1000, maxSize = 500)
+CSNK1A1<- CSNK1A1[order(pval)]
+ESR1<- fgsea(m_list, Gene_ESR1_vs_CTRL, nperm=1000, maxSize = 500)
+ESR1<- ESR1[order(pval)]
+GRB2<- fgsea(m_list, Gene_GRB2_vs_CTRL, nperm=1000, maxSize = 500)
+GRB2<-GRB2[order(pval)]
+HIPK4<- fgsea( m_list, Gene_HIPK4_vs_CTRL, nperm=1000, maxSize = 500)
+HIPK4<- HIPK4[order(pval)]
+KSR1<- fgsea(m_list, Gene_KSR1_vs_CTRL, nperm=1000, maxSize = 500)
+KSR1<-KSR1[order(pval)]
+LIMK1<- fgsea(m_list, Gene_LIMK1_vs_CTRL, nperm=1000, maxSize = 500)
+LIMK1<-LIMK1[order(pval)]
+MKNK2<- fgsea(m_list, Gene_MKNK2_vs_CTRL, nperm=1000, maxSize = 500)
+MKNK2<- MKNK2[order(pval)]
+NEK9<- fgsea(m_list, Gene_NEK9_vs_CTRL, nperm=1000, maxSize = 500)
+NEK9<- NEK9[order(pval)]
+
+pathways.list<- list(CAMK2D[,1:2],CDK8[,1:2],CSNK1A1[,1:2],ESR1[,1:2], GRB2[,1:2], HIPK4[,1:2], KSR1[,1:2],LIMK1[,1:2], MKNK2[,1:2],NEK9[,1:2])
+
+kable(pathways.list) %>%
+  kable_styling()
+```
+
+
+```{r VIPER analysis}
+
+data("regulonbrca")
+rownames(fold.data)<-genes
+fold.data<- as.data.frame(fold.data)
+
+#################################################################
+###VIPER analysis
+
+vpres <- viper(fold.data, regulonbrca, verbose=FALSE)
+
+#################################################################
+###Find Genenames for IDs in rownames
+
+ID<- rownames(vpres) #ID is a vector with the GeneIDs
+
+for (i in 1:length(ID)){
+  ID[i] <- lookUp(as.character(ID[i]), "org.Hs.eg.db", "SYMBOL")
+}
+rownames(vpres)<- ID 
+```
+
+```{r VIPER barplot}
+
+x<- c("ESR1","^TBP$","GATA3","FOXA1")
+dataT47D<- vpres[grep(paste(x, collapse = "|"), rownames(vpres)),]
+colnames(dataT47D)<- c("CAMK2D", "CDK8", "CSNK1A1", "ESR1", "GRB2", "HIPK4", "KSR1", "LIMK1", "MKNK2", "NEK9")
+dataT47D<-as.matrix(dataT47D)
+rm(x)
+
+##############################################################
+###Plot in one Bar Chart
+
+par(las=1, mar=c(2,4.25,2,3), cex.axis= 0.75)
+barplot(dataT47D,
+        axis.lty = 1,
+        main = "VIPER Results T47D",
+        col = c("orange", "brown", "yellow", "pink"),
+        beside = TRUE,
+        legend.text = TRUE,
+        args.legend = list(x = "topright",  inset=c(-0.09,0), xpd=TRUE, cex=0.6),
+        ylab = "VIPER Score",
+        space = c(0,2),
+        ylim = c(-6,6))
+box(bty= "L") #connect axis
+abline(h= c(1.64, -1.64))
+
+```
+```{r barplots of LFC data to justify VIPER}
+
+ER_genes<- names(regulonbrca$`2099`$tfmode)
+
+as_names<-c("CAMK2D", "CDK8", "CSNK1A1", "ESR1", "GRB2", "HIPK4", "KSR1","LIMK1", "MKNK2", "NEK9" )
+as_ids<-as.numeric(c("817", "1024", "1452", "2099", "2885", "147746", "8844", "3984", "2872", "91754"))
+
+#Extract all KD genes
+fold.list.kd<- list()
+fold.data<- as.matrix(fold.data)
+for (i in 1:10){
+  folds.kd<- fold.data[(match(as_ids[i],as.numeric(rownames(fold.data)))),i]
+  fold.list.kd[[as_names[i]]] <- folds.kd
+}
+
+#Extract all ER data
+fold.list.er <- list()
+fold.data<- as.matrix(fold.data)
+for (i in 1:10){
+  folds.er<- fold.data[(match(ER_genes,as.numeric(rownames(fold.data)))),i]
+  fold.list.er[[as_names[i]]] <- folds.er
+}
+
+#boxplot for all genes
+colnames(fold.data)<- as_names
+boxplot(fold.data, pch=20, horizontal=TRUE, main= "Log2FoldChange of all genes in T47D", las=1, lty=1, cex.axis=0.75)
+stripchart(fold.list.kd, add=TRUE, col = "green", pch=20)
+abline(v=0, lty=3, col="red", lwd=2)
+
+#boxplot for all ER genes
+boxplot(fold.list.er, horizontal= TRUE, pch=20, main="Log2FoldChange of all ER related genes in T47D", las=1, lty=1, cex.axis=0.75)
+abline(v=0, lty=3, col="red", lwd=2)
+```

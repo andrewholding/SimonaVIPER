@@ -1,0 +1,1133 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={R\_Code},
+            pdfauthor={Simona},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\providecommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{R\_Code}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Simona}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{26/04/2019}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{genesMCF=}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"genesMCF7.txt"}\NormalTok{, }\DataTypeTok{header=} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{sep=}\StringTok{','}\NormalTok{)}
+\NormalTok{splitted<-}\StringTok{ }\KeywordTok{str_split_fixed}\NormalTok{(genesMCF}\OperatorTok{$}\NormalTok{V2, }\StringTok{"_"}\NormalTok{,}\DecValTok{2}\NormalTok{)}
+\NormalTok{genesMCF<-}\StringTok{ }\KeywordTok{cbind.data.frame}\NormalTok{(genesMCF}\OperatorTok{$}\NormalTok{V1, splitted[,}\DecValTok{1}\NormalTok{])}
+\KeywordTok{colnames}\NormalTok{(genesMCF)<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"V1"}\NormalTok{, }\StringTok{"V2"}\NormalTok{)}
+\NormalTok{GenenamesMCF7<-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(genesMCF)}
+\NormalTok{a<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"GAPDH"}\NormalTok{)}
+\NormalTok{GenenamesMCF7<-}\KeywordTok{rbind}\NormalTok{(GenenamesMCF7, a)}
+
+\CommentTok{#GenenamesMCF and genesMCF have basically the same content. The only difference is that GenenamesMCF has GAPDH added as a control later in the heatmap.}
+
+\NormalTok{MatrixMCF7 <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"CountMatrixMCF7_Genenames.csv"}\NormalTok{, }\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{)}
+
+\KeywordTok{rownames}\NormalTok{(MatrixMCF7)<-}\StringTok{ }\KeywordTok{make.names}\NormalTok{(MatrixMCF7[,}\DecValTok{1}\NormalTok{], }\DataTypeTok{unique =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{MatrixMCF7<-}\StringTok{ }\NormalTok{MatrixMCF7[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]}
+\NormalTok{keeprow<-}\StringTok{ }\KeywordTok{rowSums}\NormalTok{(MatrixMCF7) }\OperatorTok{>}\DecValTok{10}
+\NormalTok{keepcol<-}\StringTok{ }\KeywordTok{colSums}\NormalTok{(MatrixMCF7) }\OperatorTok{>}\DecValTok{0}
+\NormalTok{MatrixMCF7<-}\StringTok{ }\NormalTok{MatrixMCF7[keeprow,keepcol]}
+
+\KeywordTok{rm}\NormalTok{(a, splitted)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Normalisation is done with VST to make the variance independent of the mean}
+
+\NormalTok{ddsMCF7<-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(MatrixMCF7)}
+
+\NormalTok{vsdMCF7 <-}\StringTok{ }\KeywordTok{varianceStabilizingTransformation}\NormalTok{(ddsMCF7)}
+
+\KeywordTok{rm}\NormalTok{(ddsMCF7)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{color.palette <-}\StringTok{ }\KeywordTok{colorRampPalette}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"#F8F8F8"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{, }\StringTok{"orange"}\NormalTok{, }\StringTok{"red"}\NormalTok{))(}\DataTypeTok{n=}\DecValTok{1100}\NormalTok{)}
+
+\NormalTok{col_breaks =}\StringTok{ }\KeywordTok{c}\NormalTok{(}\KeywordTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FloatTok{0.1}\NormalTok{,}\DataTypeTok{length=}\DecValTok{1}\NormalTok{),  }\CommentTok{# for white}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{0.1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{2.1}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{4.1}\NormalTok{,}\DecValTok{5}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{5.1}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{6.01}\NormalTok{,}\DecValTok{7}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{7.01}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{9.01}\NormalTok{,}\DecValTok{11}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{11.01}\NormalTok{,}\DecValTok{13}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{13.01}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{15.01}\NormalTok{,}\DecValTok{16}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{),}
+                \KeywordTok{seq}\NormalTok{(}\FloatTok{16.01}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DataTypeTok{length=}\DecValTok{100}\NormalTok{))}
+
+\NormalTok{###############################################################}
+\NormalTok{###Reduce normalized vsdMCF7 Matrix to only the relevant genes}
+
+\NormalTok{###extract positions and names of these genes}
+
+\NormalTok{matchMCF7=}\StringTok{ }\KeywordTok{which}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(vsdMCF7) }\OperatorTok{%in%}\StringTok{ }\NormalTok{GenenamesMCF7[,}\DecValTok{2}\NormalTok{])}
+\NormalTok{namesMCF7<-}\StringTok{ }\KeywordTok{intersect}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(vsdMCF7), GenenamesMCF7[,}\DecValTok{2}\NormalTok{])}
+
+\NormalTok{###Use normalized data and apply correct names}
+
+\NormalTok{HeatmapVSTMCF7=}\KeywordTok{list}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(matchMCF7))\{}
+\NormalTok{  m=}\StringTok{ }\NormalTok{matchMCF7[i]}
+\NormalTok{  HeatmapVSTMCF7[[i]]=}\StringTok{ }\KeywordTok{rbind}\NormalTok{(vsdMCF7[m,])}
+\NormalTok{\}}
+
+\CommentTok{#Match them all in one big data frame}
+\NormalTok{HeatmapVSTMCF7<-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{do.call}\NormalTok{(rbind, HeatmapVSTMCF7))}
+
+\KeywordTok{rownames}\NormalTok{(HeatmapVSTMCF7)<-namesMCF7}
+
+\NormalTok{HeatmapVSTMCF7<-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(HeatmapVSTMCF7)}
+
+\KeywordTok{rm}\NormalTok{(i,m)}
+
+\NormalTok{###############################################################}
+\NormalTok{##Reorder Heatmap }
+\NormalTok{genesMCF<-}\StringTok{ }\NormalTok{genesMCF[}\KeywordTok{order}\NormalTok{(genesMCF}\OperatorTok{$}\NormalTok{V2),]}
+\NormalTok{HeatmapVSTMCF7<-}\StringTok{ }\NormalTok{HeatmapVSTMCF7[}\KeywordTok{order}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(HeatmapVSTMCF7)),]}
+\CommentTok{#Both are sorted in a alphabetical order now}
+\NormalTok{genesMCF<-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(genesMCF)}
+\KeywordTok{rownames}\NormalTok{(genesMCF)<-}\StringTok{ }\NormalTok{genesMCF[,}\DecValTok{1}\NormalTok{]}
+\NormalTok{genesMCF<-}\StringTok{ }\NormalTok{genesMCF[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]}
+\NormalTok{genesMCF<-}\StringTok{ }\KeywordTok{t}\NormalTok{(genesMCF)}
+
+\CommentTok{#compare two matrices and adjust coloumns in Heatmap2 into the}
+\CommentTok{#same order as it is in genesMCF}
+
+\NormalTok{col.order<-}\StringTok{ }\KeywordTok{colnames}\NormalTok{(genesMCF)}
+
+\NormalTok{HeatmapVSTMCF7<-}\StringTok{ }\NormalTok{HeatmapVSTMCF7[,col.order]}
+
+\NormalTok{###############################################################}
+\NormalTok{##Produce actual heatmap}
+\CommentTok{#scale= none avoids that heatmap function is normalizing the data again}
+
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{las=}\DecValTok{1}\NormalTok{, }\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{9}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{9}\NormalTok{))}
+\KeywordTok{heatmap.2}\NormalTok{(HeatmapVSTMCF7, }
+          \DataTypeTok{margins =} \KeywordTok{c}\NormalTok{(}\DecValTok{7}\NormalTok{,}\DecValTok{7}\NormalTok{),}
+          \DataTypeTok{col=}\NormalTok{ color.palette, }
+          \KeywordTok{par}\NormalTok{(}\DataTypeTok{omi=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{,}\FloatTok{0.5}\NormalTok{,}\DecValTok{2}\NormalTok{)),}
+          \DataTypeTok{breaks =}\NormalTok{col_breaks, }
+          \DataTypeTok{scale=} \KeywordTok{c}\NormalTok{(}\StringTok{"none"}\NormalTok{),}
+          \DataTypeTok{Rowv =} \OtherTok{NULL}\NormalTok{,}
+          \DataTypeTok{Colv =} \OtherTok{NULL}\NormalTok{,}
+          \DataTypeTok{main =} \StringTok{"Knocked-down Genes MCF7 Heatmap"}\NormalTok{,}
+          \DataTypeTok{lhei =} \KeywordTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+          \DataTypeTok{key.title =} \StringTok{"Color Key"}\NormalTok{, }\CommentTok{#IF removed titel will be shown}
+          \DataTypeTok{keysize =} \FloatTok{0.75}\NormalTok{,}
+          \DataTypeTok{key.par =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{mar=} \KeywordTok{c}\NormalTok{(}\FloatTok{2.5}\NormalTok{,}\FloatTok{0.25}\NormalTok{,}\FloatTok{2.5}\NormalTok{,}\FloatTok{0.5}\NormalTok{)),}
+          \DataTypeTok{density.info =}  \StringTok{"none"}\NormalTok{, }
+          \DataTypeTok{key.xlab =} \StringTok{"Normalized Read Counts"}\NormalTok{,}
+          \DataTypeTok{tracecol =} \OtherTok{NA}\NormalTok{,}
+          \DataTypeTok{dendrogram=} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/Produces sorted heatmaps-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{#############################################################}
+\NormalTok{###Create an colData object with sample informations}
+
+\NormalTok{genesMCF<-}\StringTok{ }\NormalTok{genesMCF[,}\KeywordTok{order}\NormalTok{(}\KeywordTok{colnames}\NormalTok{(genesMCF))]}
+\NormalTok{coldata<-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(genesMCF)}
+\KeywordTok{colnames}\NormalTok{(coldata)<-}\StringTok{ "Gene"}
+\NormalTok{coldata}\OperatorTok{$}\NormalTok{Gene }\OperatorTok{%<>%}\StringTok{ }\KeywordTok{relevel}\NormalTok{(}\StringTok{"CTRL"}\NormalTok{) }\CommentTok{# relevel to have untreated in first position}
+
+
+\NormalTok{###########################################################}
+\NormalTok{###Do the DeSeq Analysis}
+
+\NormalTok{ddsMCF7<-}\KeywordTok{DESeqDataSetFromMatrix}\NormalTok{(}\DataTypeTok{countData =}\NormalTok{ MatrixMCF7, }\DataTypeTok{colData =}\NormalTok{ coldata, }
+                            \DataTypeTok{design=} \OperatorTok{~}\NormalTok{Gene)}
+\NormalTok{ddsMCF7<-}\StringTok{ }\KeywordTok{DESeq}\NormalTok{(ddsMCF7)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## estimating size factors
+\end{verbatim}
+
+\begin{verbatim}
+## estimating dispersions
+\end{verbatim}
+
+\begin{verbatim}
+## gene-wise dispersion estimates
+\end{verbatim}
+
+\begin{verbatim}
+## mean-dispersion relationship
+\end{verbatim}
+
+\begin{verbatim}
+## final dispersion estimates
+\end{verbatim}
+
+\begin{verbatim}
+## fitting model and testing
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{resMCF7<-}\StringTok{ }\KeywordTok{results}\NormalTok{(ddsMCF7)}
+
+\NormalTok{########################################################}
+\NormalTok{###Do the two way comparison}
+
+\NormalTok{perturbedGenes<-}\StringTok{ }\KeywordTok{resultsNames}\NormalTok{(ddsMCF7)}
+\NormalTok{perturbedGenes<-}\StringTok{ }\NormalTok{perturbedGenes[}\DecValTok{2}\OperatorTok{:}\DecValTok{11}\NormalTok{] }\CommentTok{#exclude Intercept variable}
+
+\NormalTok{shrink.list.MCF7=}\KeywordTok{list}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in}\NormalTok{ perturbedGenes)\{}
+\NormalTok{    shrink.list.MCF7[[i]]<-}\StringTok{ }\KeywordTok{lfcShrink}\NormalTok{(ddsMCF7, }
+                                 \DataTypeTok{coef =}\NormalTok{ i,}
+                                 \DataTypeTok{alpha=} \FloatTok{0.05}\NormalTok{,}
+                                 \DataTypeTok{quiet =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{#############################################################}
+\NormalTok{###plot as MA plot for visualisation}
+\CommentTok{#genes with pval <0.1 are red}
+
+\NormalTok{title=}\KeywordTok{sort}\NormalTok{(namesMCF7[(}\OperatorTok{!}\StringTok{ }\NormalTok{namesMCF7 }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"GAPDH"}\NormalTok{, }\StringTok{"CTRL"}\NormalTok{))])}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(shrink.list.MCF7))\{}
+\NormalTok{  t=title[i]}
+  \KeywordTok{plotMA}\NormalTok{(shrink.list.MCF7[[i]], }\DataTypeTok{ylim=}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{), }\DataTypeTok{main =} \KeywordTok{paste}\NormalTok{(t,}\StringTok{"vs CTRL"}\NormalTok{, }\DataTypeTok{sep=}\StringTok{" "}\NormalTok{), }\DataTypeTok{alpha=}\FloatTok{0.05}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-1.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-2.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-3.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-4.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-5.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-6.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-7.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-8.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-9.pdf}
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce MA plot-10.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{#################################################}
+\CommentTok{#Gene Set Enrichment Analysis determines whether an prior defined set }
+\CommentTok{#of genes shows statistically significant,concordant differences between two biological states/phenotypes}
+
+\NormalTok{########################################################################}
+\NormalTok{###Prepare gene IDs }
+
+\NormalTok{id=}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"CountMatrixMCF7.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+
+\KeywordTok{rownames}\NormalTok{(id)<-}\StringTok{ }\NormalTok{id[,}\DecValTok{1}\NormalTok{]}
+\NormalTok{id<-}\StringTok{ }\NormalTok{id[,}\OperatorTok{-}\DecValTok{1}\NormalTok{] }\CommentTok{#Save the GeneIDs as rownames and then delete first column containing GeneIDs}
+\NormalTok{id<-}\StringTok{ }\NormalTok{id[keeprow,keepcol]}
+
+\NormalTok{genes=}\StringTok{ }\KeywordTok{rownames}\NormalTok{(id) }\CommentTok{#In genes the actual IDs are saved}
+
+
+\NormalTok{##########################################################################}
+\NormalTok{###Load Log2Fold changes}
+\NormalTok{i=}\DecValTok{1}
+\NormalTok{fold.data<-}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{ncol=}\DecValTok{10}\NormalTok{, }\DataTypeTok{nrow =} \DecValTok{18822}\NormalTok{) }\CommentTok{#At this point it is important to enter the exact number of rows; if not: Error that subscribt out of bonds}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{)\{}
+\NormalTok{  fold.data[,i]<-}\KeywordTok{cbind}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(shrink.list.MCF7[[i]]}\OperatorTok{$}\NormalTok{log2FoldChange))}
+\NormalTok{  i=i}\OperatorTok{+}\DecValTok{1}
+\NormalTok{\}}
+
+\KeywordTok{rownames}\NormalTok{(fold.data)<-genes}
+\KeywordTok{colnames}\NormalTok{(fold.data)<-}\StringTok{ }\KeywordTok{names}\NormalTok{(shrink.list.MCF7)}
+
+\CommentTok{#Data from lowcount Genes is excluded }
+\CommentTok{#keeprows<- rowSums(fold.data) > 0}
+\CommentTok{#fold.data<-fold.data[keeprows,]}
+
+
+\NormalTok{filenames<-}\StringTok{ }\KeywordTok{colnames}\NormalTok{(fold.data)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{ncol}\NormalTok{(fold.data))\{}
+  \KeywordTok{assign}\NormalTok{(filenames[i], }\KeywordTok{as.vector}\NormalTok{(fold.data[,i])) }\CommentTok{#produces 10 seperate vectors}
+\NormalTok{\}}
+
+\CommentTok{#Assign each value in the log2Foldchange files the corresponding geneID}
+\CommentTok{#Requires genes and the log2foldchange files to have the same sequence and length}
+\KeywordTok{names}\NormalTok{(Gene_CAMK2D_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_CDK8_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_CSNK1A1_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_ESR1_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_GRB2_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_HIPK4_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_KSR1_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_LIMK1_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_MKNK2_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+\KeywordTok{names}\NormalTok{(Gene_NEK9_vs_CTRL)<-}\StringTok{ }\NormalTok{genes}
+
+\NormalTok{m_df =}\StringTok{ }\KeywordTok{msigdbr}\NormalTok{(}\DataTypeTok{species =} \StringTok{"Homo sapiens"}\NormalTok{)}
+
+\NormalTok{ESR_related<-m_df[}\KeywordTok{grep}\NormalTok{(}\StringTok{"ESR1"}\NormalTok{, m_df}\OperatorTok{$}\NormalTok{gs_name),]}
+
+\NormalTok{m_list =}\StringTok{ }\NormalTok{ESR_related }\OperatorTok{%>%}\StringTok{ }\KeywordTok{split}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ .}\OperatorTok{$}\NormalTok{entrez_gene , }\DataTypeTok{f =}\NormalTok{ .}\OperatorTok{$}\NormalTok{gs_name)}
+
+
+\NormalTok{#######################################################################}
+\NormalTok{##Log2FoldChanges are extracted in GSEA analysis}
+
+\NormalTok{CAMK2D<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_CAMK2D_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_CAMK2D_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CAMK2D<-}\StringTok{ }\NormalTok{CAMK2D[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{CDK8<-}\KeywordTok{fgsea}\NormalTok{(m_list, Gene_CDK8_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_CDK8_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CDK8<-CDK8[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{CSNK1A1<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_CSNK1A1_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_CSNK1A1_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{CSNK1A1<-}\StringTok{ }\NormalTok{CSNK1A1[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{ESR1<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_ESR1_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_ESR1_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ESR1<-}\StringTok{ }\NormalTok{ESR1[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{GRB2<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_GRB2_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_GRB2_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{GRB2<-GRB2[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{HIPK4<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{( m_list, Gene_HIPK4_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_HIPK4_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{HIPK4<-}\StringTok{ }\NormalTok{HIPK4[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{KSR1<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_KSR1_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_KSR1_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{KSR1<-KSR1[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{LIMK1<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_LIMK1_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_LIMK1_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{LIMK1<-LIMK1[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{MKNK2<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_MKNK2_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_MKNK2_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{MKNK2<-}\StringTok{ }\NormalTok{MKNK2[}\KeywordTok{order}\NormalTok{(pval)]}
+\NormalTok{NEK9<-}\StringTok{ }\KeywordTok{fgsea}\NormalTok{(m_list, Gene_NEK9_vs_CTRL, }\DataTypeTok{nperm=}\DecValTok{1000}\NormalTok{, }\DataTypeTok{maxSize =} \DecValTok{500}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in fgsea(m_list, Gene_NEK9_vs_CTRL, nperm = 1000, maxSize = 500): There are ties in the preranked stats (0.06% of the list).
+## The order of those tied genes will be arbitrary, which may produce unexpected results.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NEK9<-}\StringTok{ }\NormalTok{NEK9[}\KeywordTok{order}\NormalTok{(pval)]}
+
+\NormalTok{pathways.list<-}\StringTok{ }\KeywordTok{list}\NormalTok{(CAMK2D[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{],CDK8[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{],CSNK1A1[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{],ESR1[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{], GRB2[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{], HIPK4[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{], KSR1[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{],LIMK1[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{], MKNK2[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{],NEK9[,}\DecValTok{1}\OperatorTok{:}\DecValTok{2}\NormalTok{])}
+
+\KeywordTok{kable}\NormalTok{(pathways.list) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{kable_styling}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+\centering\begin{table}
+
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0019531\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0020534\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0080321\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.0100200\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.0215264\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0319361\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.1052632\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.1749503\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.1788462\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.3114754\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.3405941\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.3551020\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.4416342\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.4545455\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.4707071\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.5079681\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.5099602\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.5257143\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.5271967\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.5936842\\
+\hline
+MORF\_ESR1 & 0.7139918\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.0017065\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.0018975\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.0021978\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.0071942\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0315315\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0812721\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.1490385\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.1662971\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.1697793\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.2938596\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.3333333\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.3456376\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.3478261\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.4131627\\
+\hline
+MORF\_ESR1 & 0.4181818\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.5385965\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.5752212\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.5986395\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.6250000\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.6919014\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.7515789\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.0023753\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.0033898\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.0103896\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0136240\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.0171233\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.0395387\\
+\hline
+MORF\_ESR1 & 0.0471125\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0541667\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0698366\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.0733496\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.1383495\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.1659514\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.3671498\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.3734568\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.4556962\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.4678179\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.7306590\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.8808777\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.9225473\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.9328165\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.9526144\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0015337\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0015773\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0017036\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.0017544\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0023810\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.0024096\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.0025907\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0033333\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0096618\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.0125261\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.0212766\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.1179775\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.1567696\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.1796733\\
+\hline
+MORF\_ESR1 & 0.1797386\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.1883408\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.2704545\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.3162791\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.4062500\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.7197898\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.9308036\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0017668\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.0017730\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0017730\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0023202\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.0023981\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0025575\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.0055970\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0067568\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.0076046\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.0087527\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.0217865\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.0391061\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0555556\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.0784672\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.0796117\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.2336245\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.3829322\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.4549356\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.5930657\\
+\hline
+MORF\_ESR1 & 0.9267462\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.9389180\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.0024390\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0032573\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0035088\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.0066556\\
+\hline
+MORF\_ESR1 & 0.0203252\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.0298103\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0723404\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.1022222\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.1662592\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.2881356\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.3070064\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.3378545\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.3629442\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.4115942\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.4476327\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.4534247\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.4610778\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.4746622\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.4771654\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.4801980\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.7885117\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0013141\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0013908\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0034364\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0060976\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0066667\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.0110345\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.0126582\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.0205371\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.0261780\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.0389610\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0883436\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.0906344\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.1964286\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.2060302\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.2102102\\
+\hline
+MORF\_ESR1 & 0.2236181\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.2398042\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.3188854\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.4248609\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.5375817\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.8216080\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0016502\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0016779\\
+\hline
+MORF\_ESR1 & 0.0017794\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.0020284\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0089087\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.0098425\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.0103520\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0191898\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0329412\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.0946882\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.1025210\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.3372781\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.3815789\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.3972056\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.4680851\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.5109649\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.7197581\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.7955010\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.8203125\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.8506876\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.8702595\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.0019268\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.0021552\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.0069124\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0111607\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.0145530\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0163934\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.0207547\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0224913\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.0231729\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0286738\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0331588\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.0341556\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0435780\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.1391863\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.1688073\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.3017078\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.4656965\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.5000000\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.6057906\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.7654584\\
+\hline
+MORF\_ESR1 & 0.8964758\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}{l|r}
+\hline
+pathway & pval\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_UP & 0.0013605\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_UP & 0.0013986\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_UP & 0.0025974\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_DN & 0.0054745\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_UP & 0.0118343\\
+\hline
+VANTVEER\_BREAST\_CANCER\_ESR1\_DN & 0.0255682\\
+\hline
+BHAT\_ESR1\_TARGETS\_VIA\_AKT1\_DN & 0.0408163\\
+\hline
+STEIN\_ESR1\_TARGETS & 0.0686275\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_DN & 0.0804388\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_DN & 0.0995575\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_DN & 0.1034483\\
+\hline
+WANG\_METASTASIS\_OF\_BREAST\_CANCER\_ESR1\_UP & 0.1058394\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_UP & 0.1140351\\
+\hline
+BHAT\_ESR1\_TARGETS\_NOT\_VIA\_AKT1\_DN & 0.1285347\\
+\hline
+GOZGIT\_ESR1\_TARGETS\_UP & 0.1878882\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_UP & 0.2700730\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_LASER\_UP & 0.3482143\\
+\hline
+YANG\_BREAST\_CANCER\_ESR1\_BULK\_UP & 0.3816964\\
+\hline
+MORF\_ESR1 & 0.4611801\\
+\hline
+DOANE\_BREAST\_CANCER\_ESR1\_DN & 0.6234676\\
+\hline
+WILLIAMS\_ESR1\_TARGETS\_DN & 0.8952569\\
+\hline
+\end{tabular}
+\end{table}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{(}\StringTok{"regulonbrca"}\NormalTok{)}
+\KeywordTok{rownames}\NormalTok{(fold.data)<-genes}
+\NormalTok{fold.data<-}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(fold.data)}
+
+\NormalTok{#################################################################}
+\NormalTok{###VIPER analysis}
+
+\NormalTok{vpres <-}\StringTok{ }\KeywordTok{viper}\NormalTok{(fold.data, regulonbrca, }\DataTypeTok{verbose=}\OtherTok{FALSE}\NormalTok{)}
+
+\NormalTok{#################################################################}
+\NormalTok{###Find Genenames for IDs in rownames}
+
+\NormalTok{ID<-}\StringTok{ }\KeywordTok{rownames}\NormalTok{(vpres) }\CommentTok{#ID is a vector with the GeneIDs}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(ID))\{}
+\NormalTok{  ID[i] <-}\StringTok{ }\KeywordTok{lookUp}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(ID[i]), }\StringTok{"org.Hs.eg.db"}\NormalTok{, }\StringTok{"SYMBOL"}\NormalTok{)}
+\NormalTok{\}}
+\KeywordTok{rownames}\NormalTok{(vpres)<-}\StringTok{ }\NormalTok{ID }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"ESR1"}\NormalTok{,}\StringTok{"^TBP$"}\NormalTok{,}\StringTok{"GATA3"}\NormalTok{,}\StringTok{"FOXA1"}\NormalTok{)}
+\NormalTok{dataMCF7<-}\StringTok{ }\NormalTok{vpres[}\KeywordTok{grep}\NormalTok{(}\KeywordTok{paste}\NormalTok{(x, }\DataTypeTok{collapse =} \StringTok{"|"}\NormalTok{), }\KeywordTok{rownames}\NormalTok{(vpres)),]}
+\KeywordTok{colnames}\NormalTok{(dataMCF7)<-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"CAMK2D"}\NormalTok{, }\StringTok{"CDK8"}\NormalTok{, }\StringTok{"CSNK1A1"}\NormalTok{, }\StringTok{"ESR1"}\NormalTok{, }\StringTok{"GRB2"}\NormalTok{, }\StringTok{"HIPK4"}\NormalTok{, }\StringTok{"KSR1"}\NormalTok{, }\StringTok{"LIMK1"}\NormalTok{, }\StringTok{"MKNK2"}\NormalTok{, }\StringTok{"NEK9"}\NormalTok{)}
+\NormalTok{dataMCF7<-}\KeywordTok{as.matrix}\NormalTok{(dataMCF7)}
+\KeywordTok{rm}\NormalTok{(x)}
+
+\NormalTok{##############################################################}
+\NormalTok{###Plot in one Bar Chart}
+
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{las=}\DecValTok{1}\NormalTok{, }\DataTypeTok{mar=}\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\FloatTok{4.25}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{), }\DataTypeTok{cex.axis=} \FloatTok{0.75}\NormalTok{)}
+\KeywordTok{barplot}\NormalTok{(dataMCF7,}
+        \DataTypeTok{axis.lty =} \DecValTok{1}\NormalTok{,}
+        \DataTypeTok{main =} \StringTok{"VIPER Results MCF7"}\NormalTok{,}
+        \DataTypeTok{col =} \KeywordTok{c}\NormalTok{(}\StringTok{"orange"}\NormalTok{, }\StringTok{"brown"}\NormalTok{, }\StringTok{"yellow"}\NormalTok{, }\StringTok{"pink"}\NormalTok{),}
+        \DataTypeTok{beside =} \OtherTok{TRUE}\NormalTok{,}
+        \DataTypeTok{legend.text =} \OtherTok{TRUE}\NormalTok{,}
+        \DataTypeTok{args.legend =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{x =} \StringTok{"topright"}\NormalTok{,  }\DataTypeTok{inset=}\KeywordTok{c}\NormalTok{(}\OperatorTok{-}\FloatTok{0.1}\NormalTok{,}\DecValTok{0}\NormalTok{), }\DataTypeTok{xpd=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{cex=}\FloatTok{0.75}\NormalTok{),}
+        \DataTypeTok{ylab =} \StringTok{"VIPER Score"}\NormalTok{,}
+        \DataTypeTok{space =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{),}
+        \DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\OperatorTok{-}\DecValTok{6}\NormalTok{,}\DecValTok{6}\NormalTok{))}
+\KeywordTok{box}\NormalTok{(}\DataTypeTok{bty=} \StringTok{"L"}\NormalTok{) }\CommentTok{#connect axis}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{h=} \KeywordTok{c}\NormalTok{(}\FloatTok{1.64}\NormalTok{, }\OperatorTok{-}\FloatTok{1.64}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/VIPER barplot-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#We use lfc regardsless of padj because thats what VIPER does}
+\CommentTok{#Find ER related genes and define regex so that only exact matches in grep are allowed}
+
+\NormalTok{ER_genes<-}\StringTok{ }\KeywordTok{names}\NormalTok{(regulonbrca}\OperatorTok{$}\StringTok{`}\DataTypeTok{2099}\StringTok{`}\OperatorTok{$}\NormalTok{tfmode)}
+
+\NormalTok{as_names<-}\KeywordTok{c}\NormalTok{(}\StringTok{"CAMK2D"}\NormalTok{, }\StringTok{"CDK8"}\NormalTok{, }\StringTok{"CSNK1A1"}\NormalTok{, }\StringTok{"ESR1"}\NormalTok{, }\StringTok{"GRB2"}\NormalTok{, }\StringTok{"HIPK4"}\NormalTok{, }\StringTok{"KSR1"}\NormalTok{,}\StringTok{"LIMK1"}\NormalTok{, }\StringTok{"MKNK2"}\NormalTok{, }\StringTok{"NEK9"}\NormalTok{ )}
+\NormalTok{as_ids<-}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\StringTok{"817"}\NormalTok{, }\StringTok{"1024"}\NormalTok{, }\StringTok{"1452"}\NormalTok{, }\StringTok{"2099"}\NormalTok{, }\StringTok{"2885"}\NormalTok{, }\StringTok{"147746"}\NormalTok{, }\StringTok{"8844"}\NormalTok{, }\StringTok{"3984"}\NormalTok{, }\StringTok{"2872"}\NormalTok{, }\StringTok{"91754"}\NormalTok{))}
+
+\CommentTok{#Extract all KD genes}
+\NormalTok{fold.list.kd<-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{fold.data<-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(fold.data)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{)\{}
+\NormalTok{  folds.kd<-}\StringTok{ }\NormalTok{fold.data[(}\KeywordTok{match}\NormalTok{(as_ids[i],}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(fold.data)))),i]}
+\NormalTok{  fold.list.kd[[as_names[i]]] <-}\StringTok{ }\NormalTok{folds.kd}
+\NormalTok{\}}
+
+\CommentTok{#Extract all ER data}
+\NormalTok{fold.list.er <-}\StringTok{ }\KeywordTok{list}\NormalTok{()}
+\NormalTok{fold.data<-}\StringTok{ }\KeywordTok{as.matrix}\NormalTok{(fold.data)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{10}\NormalTok{)\{}
+\NormalTok{  folds.er<-}\StringTok{ }\NormalTok{fold.data[(}\KeywordTok{match}\NormalTok{(ER_genes,}\KeywordTok{as.numeric}\NormalTok{(}\KeywordTok{rownames}\NormalTok{(fold.data)))),i]}
+\NormalTok{  fold.list.er[[as_names[i]]] <-}\StringTok{ }\NormalTok{folds.er}
+\NormalTok{\}}
+
+\CommentTok{#boxplot for all genes}
+\KeywordTok{colnames}\NormalTok{(fold.data)<-}\StringTok{ }\NormalTok{as_names}
+\KeywordTok{boxplot}\NormalTok{(fold.data, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{, }\DataTypeTok{horizontal=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{main=} \StringTok{"Log2FoldChange of all genes in MCF7"}\NormalTok{, }\DataTypeTok{las=}\DecValTok{1}\NormalTok{, }\DataTypeTok{lty=}\DecValTok{1}\NormalTok{, }\DataTypeTok{cex.axis=}\FloatTok{0.75}\NormalTok{)}
+\KeywordTok{stripchart}\NormalTok{(fold.list.kd, }\DataTypeTok{add=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{col =} \StringTok{"green"}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\DecValTok{0}\NormalTok{, }\DataTypeTok{lty=}\DecValTok{3}\NormalTok{, }\DataTypeTok{col=}\StringTok{"red"}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce barplots of shrink fold data-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#boxplot for all ER genes}
+\KeywordTok{boxplot}\NormalTok{(fold.list.er, }\DataTypeTok{horizontal=} \OtherTok{TRUE}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{, }\DataTypeTok{main=}\StringTok{"Log2FoldChange of all ER related genes in MCF7"}\NormalTok{, }\DataTypeTok{las=}\DecValTok{1}\NormalTok{, }\DataTypeTok{lty=}\DecValTok{1}\NormalTok{, }\DataTypeTok{cex.axis=}\FloatTok{0.75}\NormalTok{)}
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{v=}\DecValTok{0}\NormalTok{, }\DataTypeTok{lty=}\DecValTok{3}\NormalTok{, }\DataTypeTok{col=}\StringTok{"red"}\NormalTok{, }\DataTypeTok{lwd=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{SummaryRNASeqAnalysisMCF7_files/figure-latex/produce barplots of shrink fold data-2.pdf}
+
+
+\end{document}
