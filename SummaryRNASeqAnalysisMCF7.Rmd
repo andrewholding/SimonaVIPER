@@ -182,6 +182,58 @@ for (i in perturbedGenes){
 
 ```
 
+```{r PCA - ANH Saw a batch effect in rep 1}
+
+ddsMCF7<-DESeqDataSetFromMatrix(countData = MatrixMCF7, colData = coldata, 
+                                design= ~Gene)
+
+ddsMCF7 <- estimateSizeFactors(ddsMCF7)
+
+genesMCF= read.csv("genesMCF7.txt", header= FALSE, sep=',')
+splitted<- str_split_fixed(genesMCF$V2, "_",2)
+splitted2<- str_split_fixed(splitted[,2], "_",2)
+rownames(splitted2)<-genesMCF$V1
+
+coldata_rep<-cbind(coldata,splitted2[rownames(coldata),2])
+colnames(coldata_rep)[2]<-"Rep"
+
+seMCF7<-SummarizedExperiment(log2(counts(ddsMCF7, normalized=TRUE)+1),colData =coldata_rep )
+
+plotPCA( DESeqTransform(seMCF7),intgroup="Rep" )
+
+
+```
+
+
+
+
+```{r Batch Correct Analysis}
+
+###########################################################
+###Do the DeSeq Analysis
+
+ddsMCF7<-DESeqDataSetFromMatrix(countData = MatrixMCF7, colData = coldata_rep, 
+                            design= ~Rep + Gene)
+ddsMCF7<- DESeq(ddsMCF7)
+resMCF7<- results(ddsMCF7)
+
+########################################################
+###Do the two way comparison
+
+perturbedGenes<- resultsNames(ddsMCF7)[7:16]#exclude Intercept variable + batch
+
+
+shrink.list.MCF7=list()
+for (i in perturbedGenes){
+    shrink.list.MCF7[[i]]<- lfcShrink(ddsMCF7, 
+                                 coef = i,
+                                 alpha= 0.05,
+                                 quiet = TRUE)
+}
+
+```
+
+
 ```{r produce MA plot}
 #############################################################
 ###plot as MA plot for visualisation
@@ -372,3 +424,28 @@ boxplot(fold.list.er, horizontal= TRUE, pch=20, main="Log2FoldChange of all ER r
 abline(v=0, lty=3, col="red", lwd=2)
   
 ```
+
+
+```{r Heatmap of fold Changes} 
+sampleDists <- dist(t(fold.data))
+
+library("RColorBrewer")
+library("pheatmap")
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) 
+colnames(sampleDistMatrix) 
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+
+```
+```{r Key ER genes}
+geneList<-c('5914','1509', '5241')
+geneNames<-c("RARA",'CTSD','PGR')
+tableFC<-fold.data[geneList,c("ESR1","NEK9")]
+rownames(tableFC)<-geneNames
+tableFC
+```
+

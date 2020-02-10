@@ -149,29 +149,60 @@ heatmap.2(HeatmapVSTT47D,
           dendrogram= "none")
 ```
 
+```{r PCA - ANH Saw a batch effect in rep 1 of MCF7.}
+ genesT47D2<-genesT47D
+ genesT47D<- genesT47D[order(colnames(genesT47D))]
+ coldata<- as.data.frame(genesT47D)
+ rownames(coldata)<-colnames(genesT47D2)[order(colnames(genesT47D2))]
+ colnames(coldata)<- "Gene"
+ coldata$Gene %<>% relevel("CTRL") # relevel to have untreated in first position
+ 
+ 
+ ddsT47D<-DESeqDataSetFromMatrix(countData = MatrixT47D, colData = coldata, 
+                                 design= ~Gene)
+ 
+ ddsT47D <- estimateSizeFactors(ddsT47D)
+ 
+ genesT47D= read.csv("genesT47D.txt", header= FALSE, sep=',')
+ splitted<- str_split_fixed(genesT47D$V2, "_",2)
+ 
+ splitted2<- str_split_fixed(splitted[,2], "_",2)
+ rownames(splitted2)<-genesT47D$V1
+ 
+ coldata_rep<-cbind(coldata,splitted2[rownames(coldata),2])
+ colnames(coldata_rep)[2]<-"Rep"
+ 
+ 
+ seT47D<-SummarizedExperiment(log2(counts(ddsT47D, normalized=TRUE)+1),colData =coldata_rep )
+ 
+ plotPCA( DESeqTransform(seT47D),intgroup="Rep" )
+
+
+```
+
 ```{r DESeq2 analysis for differential genexpression}
 #############################################################
 ###Create an colData object with sample informations
 
-genesT47D<- genesT47D[,order(colnames(genesT47D))]
-coldata<- as.data.frame(genesT47D)
-colnames(coldata)<- "Gene"
-coldata$Gene %<>% relevel("CTRL") # relevel to have untreated in first position
+# genesT47D<- genesT47D[order(colnames(genesT47D))]
+# coldata<- as.data.frame(genesT47D)
+# colnames(coldata)<- "Gene"
+# coldata$Gene %<>% relevel("CTRL") # relevel to have untreated in first position
 
 
 ###########################################################
-###Do the DeSeq Analysis
-
-ddsT47D<-DESeqDataSetFromMatrix(countData = MatrixT47D, colData = coldata, 
-                            design= ~Gene)
-ddsT47D<- DESeq(ddsT47D)
+###Do the DeSeq Analysis  -- ANH added Rep to model batch effects code
+ 
+ddsT47D<-DESeqDataSetFromMatrix(countData = MatrixT47D, colData = coldata_rep, 
+                            design= ~Rep + Gene)
+ddsT47D<- DESeq(ddsT47D)  
 resT47D<- results(ddsT47D)
 
 ########################################################
 ###Do the two way comparison
 
-perturbedGenes<- resultsNames(ddsT47D)
-perturbedGenes<- perturbedGenes[2:11] #exclude Intercept variable
+perturbedGenes<- resultsNames(ddsT47D)[7:16] #Exlude interecpt and batch
+
 
 shrink.list.T47D=list()
 for (i in perturbedGenes){
@@ -367,3 +398,29 @@ abline(v=0, lty=3, col="red", lwd=2)
 boxplot(fold.list.er, horizontal= TRUE, pch=20, main="Log2FoldChange of all ER related genes in T47D", las=1, lty=1, cex.axis=0.75)
 abline(v=0, lty=3, col="red", lwd=2)
 ```
+
+
+
+```{r Heatmap of fold Changes} 
+sampleDists <- dist(t(fold.data))
+
+library("RColorBrewer")
+library("pheatmap")
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) 
+colnames(sampleDistMatrix) 
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+
+```
+```{r Key ER genes}
+geneList<-c('5914','1509', '5241')
+geneNames<-c("RARA",'CTSD','PGR')
+tableFC<-fold.data[geneList,c("ESR1","NEK9")]
+rownames(tableFC)<-geneNames
+tableFC
+```
+
