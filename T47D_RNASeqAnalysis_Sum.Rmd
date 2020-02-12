@@ -3,6 +3,7 @@ title: "T47D_RNASeqAnalzsis_Sum"
 author: "Simona"
 date: "30/04/2019"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -365,6 +366,32 @@ box(bty= "L") #connect axis
 abline(h= c(1.64, -1.64))
 
 ```
+
+```{r NEK9 only plot}
+x<- c("ESR1","^TBP$","GATA3","FOXA1")
+dataT47D_NEK9<- vpres[grep(paste(x, collapse = "|"), rownames(vpres)),]
+dataT47D_NEK9<-dataT47D_NEK9[,c(4,10)]
+colnames(dataT47D_NEK9)<- c( "ESR1",  "NEK9")
+dataT47D_NEK9<-as.matrix(dataT47D_NEK9)
+rm(x)
+
+
+par(las=1, mar=c(2,4.25,2,3), cex.axis= 0.75)
+barplot(dataT47D_NEK9,
+        axis.lty = 1,
+        main = "VIPER Results T47D",
+        col = c("orange", "brown", "yellow", "pink"),
+        beside = TRUE,
+        legend.text = TRUE,
+        args.legend = list(x = "topright",  inset=c(-0.1,0), xpd=TRUE, cex=0.75),
+        ylab = "VIPER Score",
+        space = c(0,2),
+        ylim = c(-6,6))
+box(bty= "L") #connect axis
+abline(h= c(1.64, -1.64))
+```
+
+
 ```{r barplots of LFC data to justify VIPER}
 
 ER_genes<- names(regulonbrca$`2099`$tfmode)
